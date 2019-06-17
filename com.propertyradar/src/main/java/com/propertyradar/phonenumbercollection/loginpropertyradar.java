@@ -20,20 +20,42 @@ public class loginpropertyradar {
 	RemoteWebDriver driver;
 	ArrayList<String> al = new ArrayList<String>();
 
-	//@Test
+	// @Test
 	public void login() {
 		System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver.exe");
 		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
 		driver.get("https://www.propertyradar.com/");
-		driver.findElementByXPath("(//a[text()='Login'])[1]").click(); 
+	}
+	
+	// method updated as per the production environment
+	public void launchpropertyradar() {
+		/*if (driver.findElementByName("intercom-launcher-frame").isDisplayed()) {
+			driver.switchTo().frame(driver.findElementByName("intercom-launcher-frame"));
+			driver.findElementByXPath("//div[contains(@class,'intercom-launcher')]").click();
+			driver.findElementByXPath("//div[contains(@class,'intercom-launcher')]/div[2]").click();
+			driver.switchTo().defaultContent();
+		}
+*/
+		driver.findElementByXPath("(//a[text()='Login'])[1]").click();
 		driver.findElementByName("userEmail").sendKeys("jkralik@upstartresidential.com");
 		driver.findElementByName("userPW").sendKeys("1101Marian");
 		WebDriverWait waitlogin = new WebDriverWait(driver, 30);
 		waitlogin.until(
 				ExpectedConditions.elementToBeClickable(driver.findElementByXPath("(//span[@data-ref='btnEl'])[4]")));
 		driver.findElementByXPath("(//span[@data-ref='btnEl'])[4]").click();
+
+		/*
+		 * driver.findElementByXPath("(//a[text()='Login'])[1]").click();
+		 * driver.findElementByName("userEmail").sendKeys(
+		 * "jkralik@upstartresidential.com");
+		 * driver.findElementByName("userPW").sendKeys("1101Marian"); WebDriverWait
+		 * waitlogin = new WebDriverWait(driver, 30); waitlogin.until(
+		 * ExpectedConditions.elementToBeClickable(driver.findElementByXPath(
+		 * "(//span[@data-ref='btnEl'])[4]")));
+		 * driver.findElementByXPath("(//span[@data-ref='btnEl'])[4]").click();
+		 */
 	}
 
 	public void pageloadstate() throws InterruptedException {
@@ -59,7 +81,17 @@ public class loginpropertyradar {
 			String cellvalue = worksheet.getRow(i).getCell(0).getStringCellValue();
 			System.out.println(cellvalue);
 			al.add(cellvalue);
+
 		}
+
+	}
+
+	public void bothandling() throws InterruptedException {
+
+		driver.switchTo().frame(driver.findElementByName("intercom-messenger-frame"));
+		Thread.sleep(3000);
+		driver.findElementByXPath("//div[contains(@class,'header-buttons-close-button-body')]").click();
+		driver.switchTo().defaultContent();
 
 	}
 

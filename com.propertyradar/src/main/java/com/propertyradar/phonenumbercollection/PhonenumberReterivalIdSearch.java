@@ -14,119 +14,123 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
+import org.testng.xml.LaunchSuite;
 
 import com.propertyradar.phonenumbercollection.loginpropertyradar;
 
 public class PhonenumberReterivalIdSearch extends loginpropertyradar {
 
 	@Test
-    public void getphonumber() throws InterruptedException, IOException {
-          //reading data from Excel 
-          exceldata();
-          int sizeofdata = al.size();
+	public void getphonumber() throws InterruptedException, IOException {
+		// reading data from Excel
+		exceldata();
 
-          // Browser launcha nd login to Application 
-          login();
-          Thread.sleep(5000);
-          
-          //Select the search icon on right top corner
-          driver.findElementByXPath("(//span[@data-ref='btnIconEl'])[3]").click();
+		int sizeofdata = al.size();
 
-          Thread.sleep(2000);
+		// Browser launch and login to Application
+		login ();
+		launchpropertyradar();
+		Thread.sleep(5000);
 
-          //Depending up on the total inputs given , following loop will be executed.
-          for (int j = 0; j <= sizeofdata - 1; j++) {
+		// Select the search icon on right top corner
+		driver.findElementByXPath("(//span[@data-ref='btnIconEl'])[1]").click();
+        driver.findElementByXPath("//span[text()='Lookup']").click();        
+		Thread.sleep(2000);
 
-               //Enter data n the RadarID search edit box
-               driver.findElementByXPath("//input[@placeholder= 'RadarID']").sendKeys(al.get(j));
-               Thread.sleep(2000);
+		// Depending up on the total inputs given , following loop will be executed.
+		for (int j = 0; j <= sizeofdata - 1; j++) {
 
-               driver.findElementByXPath("(//span[text()='Search'])[3]").click();
+			// Enter data n the RadarID search edit box
+			driver.findElementByXPath("//input[@placeholder= 'RadarID']").sendKeys(al.get(j));
+			Thread.sleep(2000);
 
-               WebDriverWait wait2 = new WebDriverWait(driver, 60);
-               // Selecting the Contacts tab to navigate from Overview tab to Contacts tab.
-               try {
-                    wait2.until(ExpectedConditions
-                          .elementToBeClickable(driver.findElementByXPath("(//span[text()='Contacts'])[1]")));
-                    driver.findElementByXPath("(//span[text()='Contacts'])[1]").click();
-               } catch (Exception e1) {
-                    System.out.println("Exception ocured during navigating to contacts page");
-               }
+			driver.findElementByXPath("(//span[text()='Search'])[3]").click();
 
-               
-               /*try {
-                    WebDriverWait wait3 = new WebDriverWait(driver, 90);
-                    wait3.until(ExpectedConditions.elementToBeSelected(driver
-                          .findElementByXPath("(//div[contains(@id,'phoneTypeWidget')]/div/div/div/div/label/a)[1]")));
-                    System.out.println("Name of the person - "
-                               + driver.findElementByXPath("(//span[contains(@class,'panel-headers')])[1]").getText());
-               } catch (Exception e1) {
-                    System.out.println("Exception occured during the ph number occurance for "
-                               + driver.findElementByXPath("(//span[contains(@class,'panel-headers')])[1]").getText());
-               }*/
-               
-               // confirming whether page is loaded fully or not
-               pageloadstate();
-               
-               // retrieving the list of available Phone numbers and saving it in the list  
-               List<WebElement> phonenumberdetails = driver
-                    .findElementsByXPath("//div[contains(@id,'phoneTypeWidget')]/div/div/div/div/label/a");
+			WebDriverWait wait2 = new WebDriverWait(driver, 60);
+			// Selecting the Contacts tab to navigate from Overview tab to Contacts tab.
+			try {
+				wait2.until(ExpectedConditions
+						.elementToBeClickable(driver.findElementByXPath("(//span[text()='Contacts'])[1]")));
+				driver.findElementByXPath("(//span[text()='Contacts'])[1]").click();
+			} catch (Exception e1) {
+				System.out.println("Exception ocured during navigating to contacts page");
+			}
 
-               int phonenumbercount = phonenumberdetails.size();
+			/*
+			 * try { WebDriverWait wait3 = new WebDriverWait(driver, 90);
+			 * wait3.until(ExpectedConditions.elementToBeSelected(driver
+			 * .findElementByXPath(
+			 * "(//div[contains(@id,'phoneTypeWidget')]/div/div/div/div/label/a)[1]")));
+			 * System.out.println("Name of the person - " +
+			 * driver.findElementByXPath("(//span[contains(@class,'panel-headers')])[1]").
+			 * getText()); } catch (Exception e1) {
+			 * System.out.println("Exception occured during the ph number occurance for " +
+			 * driver.findElementByXPath("(//span[contains(@class,'panel-headers')])[1]").
+			 * getText()); }
+			 */
 
-               for (WebElement element : phonenumberdetails) {
-                    System.out.println(element.getText());
-               }
+			// confirming whether page is loaded fully or not
+			pageloadstate();
 
-               ArrayList<String> alwrite = new ArrayList<String>();
+			// retrieving the list of available Phone numbers and saving it in the list
+			List<WebElement> phonenumberdetails = driver
+					.findElementsByXPath("//div[contains(@id,'phoneTypeWidget')]/div/div/div/div/label/a");
 
-               FileInputStream fis1 = new FileInputStream(".//testdata/Outputresult.xlsx");
-               XSSFWorkbook workbook1 = new XSSFWorkbook(fis1);
-               XSSFSheet worksheet1 = workbook1.getSheet("Sheet1");
-               int rowcount = worksheet1.getLastRowNum() + 1;
-               System.out.println("rowcount:" + rowcount);
-               System.out.println("phonnumber count:" + phonenumbercount);
-               XSSFRow row = worksheet1.createRow(rowcount);
-               row.createCell(10).setCellValue(al.get(j));
-               String phnumber = "";
+			int phonenumbercount = phonenumberdetails.size();
 
-               if (phonenumbercount > 0) {
-                    for (WebElement phonenumber : phonenumberdetails) {
-                          phnumber = phonenumber.getText();
-                          alwrite.add(phnumber);
-                    }
-               } else {
-                    System.out.println("Phone number doesnot exists for : " + al.get(j));
-               }
+			for (WebElement element : phonenumberdetails) {
+				System.out.println(element.getText());
+			}
 
-               LinkedHashSet<String> lhs = new LinkedHashSet<String>();
-               lhs.addAll(alwrite);
+			ArrayList<String> alwrite = new ArrayList<String>();
 
-               ArrayList<String> als = new ArrayList<String>();
-               als.addAll(lhs);
-               System.out.println(als);
+			FileInputStream fis1 = new FileInputStream(".//testdata/Outputresult.xlsx");
+			XSSFWorkbook workbook1 = new XSSFWorkbook(fis1);
+			XSSFSheet worksheet1 = workbook1.getSheet("Sheet1");
+			int rowcount = worksheet1.getLastRowNum() + 1;
+			System.out.println("rowcount:" + rowcount);
+			System.out.println("phonnumber count:" + phonenumbercount);
+			XSSFRow row = worksheet1.createRow(rowcount);
+			row.createCell(10).setCellValue(al.get(j));
+			String phnumber = "";
 
-               for (int k = 0; k < als.size(); k++) {
-                    try {
-                          row.createCell(k).setCellValue(als.get(k));
-                    } catch (Exception e) {
-                          System.out.println("Exception occured while saving the data in excel" + e);
-                    }
-               }
+			if (phonenumbercount > 0) {
+				for (WebElement phonenumber : phonenumberdetails) {
+					phnumber = phonenumber.getText();
+					alwrite.add(phnumber);
+				}
+			} else {
+				System.out.println("Phone number doesnot exists for : " + al.get(j));
+			}
 
-               System.out.println("Going to save data in excel");
+			LinkedHashSet<String> lhs = new LinkedHashSet<String>();
+			lhs.addAll(alwrite);
 
-               FileOutputStream fos = new FileOutputStream(".//testdata/Outputresult.xlsx");
-               workbook1.write(fos);
-               workbook1.close();
+			ArrayList<String> als = new ArrayList<String>();
+			als.addAll(lhs);
+			System.out.println(als);
 
-               // driver.findElementByXPath("//span[contains(@class,'icon-pr-left')]").click();
+			for (int k = 0; k < als.size(); k++) {
+				try {
+					row.createCell(k).setCellValue(als.get(k));
+				} catch (Exception e) {
+					System.out.println("Exception occured while saving the data in excel" + e);
+				}
+			}
 
-               driver.navigate().back();
-               System.out.println("Navigating to search window");
+			System.out.println("Going to save data in excel");
 
-          }
+			FileOutputStream fos = new FileOutputStream(".//testdata/Outputresult.xlsx");
+			workbook1.write(fos);
+			workbook1.close();
 
-    }
+			// driver.findElementByXPath("//span[contains(@class,'icon-pr-left')]").click();
+
+			driver.navigate().back();
+			System.out.println("Navigating to search window");
+
+		}
+
+	}
 
 }
