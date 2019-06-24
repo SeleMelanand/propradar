@@ -18,18 +18,20 @@ import org.testng.annotations.Test;
 
 public class PhonenumberReterivaladdresssearch extends loginpropertyradar {
 	private XSSFWorkbook workbook1;
-	
+
 	@Test
 	public void getphonumber() throws InterruptedException, IOException {
 		exceldata();
 		int sizeofdata = al.size();
-
+		System.out.println(sizeofdata);
 		login();
-		
+		launchpropertyradar();
 		Thread.sleep(5000);
 
-		driver.findElementByXPath("(//span[@data-ref='btnIconEl'])[3]").click();
-
+		//driver.findElementByXPath("(//span[@data-ref='btnIconEl'])[3]").click();
+		// Select the search icon on right top corner
+			driver.findElementByXPath("(//span[@data-ref='btnIconEl'])[1]").click();
+	        driver.findElementByXPath("//span[text()='Lookup']").click();  
 		Thread.sleep(2000);
 
 		for (int j = 0; j <= sizeofdata - 1; j++) {
@@ -43,24 +45,23 @@ public class PhonenumberReterivaladdresssearch extends loginpropertyradar {
 			wait1.until(
 					ExpectedConditions.elementToBeClickable(driver.findElementByXPath("//ul[@class='x-list-plain']")));
 
-			
 			for (int i = 0; i < 10; i++) {
 				try {
 					Assert.assertTrue(driver.findElementByXPath("(//ul[@class='x-list-plain']/div)[1]").isEnabled());
 					break;
 				} catch (Exception e) {
-					System.out.println("Exception occured - to be verified while selecting the value from dropdown - "+ i);
+					System.out.println(
+							"Exception occured - to be verified while selecting the value from dropdown - " + i);
 				}
 			}
 
 			Thread.sleep(3000);
 			String verifyaddress = driver.findElementByXPath("(//ul[@class='x-list-plain']/div)[1]").getText();
-			
-			System.out.println("verify address text value is : "+ verifyaddress);
-			
+
+			System.out.println("verify address text value is : " + verifyaddress);
 
 			if (verifyaddress.equalsIgnoreCase(al.get(j))) {
-				driver.findElementByXPath("//div[text()='" + al.get(j) + "']").click();
+				driver.findElementByXPath("//div[text()='" + al.get(j) + "']").click();// code to be verified................
 
 				System.out.println("Both address are same");
 				Thread.sleep(5000);
@@ -133,39 +134,31 @@ public class PhonenumberReterivaladdresssearch extends loginpropertyradar {
 
 				FileOutputStream fos = new FileOutputStream(".//testdata/Outputresult.xlsx");
 				workbook1.write(fos);
-			
 
 				driver.findElementByXPath("//span[contains(@class,'icon-pr-left')]").click();
 				System.out.println("Navigating to search window");
 
-			}
-			else{
-				
+			} else {
+
 				driver.findElementByXPath("//input[@placeholder=\"Address\"]").clear();
 				Thread.sleep(3000);
-				System.out.println("Address doesnot exists : "+ al.get(j));
-				
+				System.out.println("Address doesnot exists : " + al.get(j));
+
 				FileInputStream fis1 = new FileInputStream(".//testdata/Outputresult.xlsx");
 				XSSFWorkbook workbook1 = new XSSFWorkbook(fis1);
 				XSSFSheet worksheet1 = workbook1.getSheet("Sheet1");
 				int rowcount = worksheet1.getLastRowNum() + 1;
 				XSSFRow row = worksheet1.createRow(rowcount);
-				String cellval = al.get(j)+"- Address not exists"; 
+				String cellval = al.get(j) + "- Address not exists";
 				row.createCell(10).setCellValue(cellval);
 				FileOutputStream fos1 = new FileOutputStream(".//testdata/Outputresult.xlsx");
 				workbook1.write(fos1);
-				
-				
-				
+
 			}
-			
-			
 
 		}
 		workbook1.close();
 
-		
 	}
-	
-	
+
 }
