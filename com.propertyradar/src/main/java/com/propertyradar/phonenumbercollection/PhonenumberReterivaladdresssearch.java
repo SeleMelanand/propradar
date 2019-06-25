@@ -16,7 +16,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
-public class PhonenumberReterivaladdresssearch extends loginpropertyradar {
+public class PhonenumberReterivaladdresssearch extends Loginpropertyradar {
 	private XSSFWorkbook workbook1;
 
 	@Test
@@ -57,13 +57,15 @@ public class PhonenumberReterivaladdresssearch extends loginpropertyradar {
 
 			Thread.sleep(3000);
 			String verifyaddress = driver.findElementByXPath("(//ul[@class='x-list-plain']/div)[1]").getText();
-
+			String addressfromexcel = al.get(j);
 			System.out.println("verify address text value is : " + verifyaddress);
+			System.out.println("Address from the excel sheet is : "+ addressfromexcel);
+			
+			if (verifyaddress.equalsIgnoreCase(addressfromexcel)) {
+				
+				System.out.println("Both address are same");				
+				driver.findElementByXPath("//div[text()='" + verifyaddress + "']").click();
 
-			if (verifyaddress.equalsIgnoreCase(al.get(j))) {
-				driver.findElementByXPath("//div[text()='" + al.get(j) + "']").click();// code to be verified................
-
-				System.out.println("Both address are same");
 				Thread.sleep(5000);
 				driver.findElementByXPath("(//span[text()='Search'])[1]").click();
 
@@ -139,11 +141,11 @@ public class PhonenumberReterivaladdresssearch extends loginpropertyradar {
 				System.out.println("Navigating to search window");
 
 			} else {
-
+				System.out.println("Address doesnot exists : " + al.get(j));
+				
 				driver.findElementByXPath("//input[@placeholder=\"Address\"]").clear();
 				Thread.sleep(3000);
-				System.out.println("Address doesnot exists : " + al.get(j));
-
+				
 				FileInputStream fis1 = new FileInputStream(".//testdata/Outputresult.xlsx");
 				XSSFWorkbook workbook1 = new XSSFWorkbook(fis1);
 				XSSFSheet worksheet1 = workbook1.getSheet("Sheet1");
