@@ -26,9 +26,8 @@ public class PhonenumberReterivaladdresssearch extends Loginpropertyradar {
 		System.out.println(sizeofdata);
 		login();
 		launchpropertyradar();
-		Thread.sleep(5000);
+		Thread.sleep(3000);
 
-		//driver.findElementByXPath("(//span[@data-ref='btnIconEl'])[3]").click();
 		// Select the search icon on right top corner
 			driver.findElementByXPath("(//span[@data-ref='btnIconEl'])[1]").click();
 	        driver.findElementByXPath("//span[text()='Lookup']").click();  
@@ -41,7 +40,7 @@ public class PhonenumberReterivaladdresssearch extends Loginpropertyradar {
 
 			driver.findElementByXPath("//input[@placeholder='Address']").sendKeys(al.get(j));
 
-			WebDriverWait wait1 = new WebDriverWait(driver, 90);
+			WebDriverWait wait1 = new WebDriverWait(driver, 30);
 			wait1.until(
 					ExpectedConditions.elementToBeClickable(driver.findElementByXPath("//ul[@class='x-list-plain']")));
 
@@ -55,7 +54,7 @@ public class PhonenumberReterivaladdresssearch extends Loginpropertyradar {
 				}
 			}
 
-			Thread.sleep(3000);
+			Thread.sleep(2000);
 			String verifyaddress = driver.findElementByXPath("(//ul[@class='x-list-plain']/div)[1]").getText();
 			String addressfromexcel = al.get(j);
 			System.out.println("verify address text value is : " + verifyaddress);
@@ -66,10 +65,10 @@ public class PhonenumberReterivaladdresssearch extends Loginpropertyradar {
 				System.out.println("Both address are same");				
 				driver.findElementByXPath("//div[text()='" + verifyaddress + "']").click();
 
-				Thread.sleep(5000);
+				Thread.sleep(2000);
 				driver.findElementByXPath("(//span[text()='Search'])[1]").click();
 
-				WebDriverWait wait2 = new WebDriverWait(driver, 60);
+				WebDriverWait wait2 = new WebDriverWait(driver, 40);
 
 				try {
 					wait2.until(ExpectedConditions
@@ -78,15 +77,24 @@ public class PhonenumberReterivaladdresssearch extends Loginpropertyradar {
 				} catch (Exception e1) {
 					System.out.println("Exception ocured during navigating to contacts page");
 				}
+				
+				
+				
+				
+			/*	try {
+					WebDriverWait wait3 = new WebDriverWait(driver, 20);
 
-				try {
-					wait2.until(ExpectedConditions.elementToBeSelected(driver.findElementByXPath(
+					wait3.until(ExpectedConditions.elementToBeSelected(driver.findElementByXPath(
 							"(//div[contains(@id,'phoneTypeWidget')]/div/div/div/div/label/a)[1]")));
 					System.out.println("Name of the person");
 				} catch (Exception e1) {
 					System.out.println("Exception occured during the ph number occurance");
-				}
-
+				}*/
+				
+				
+				// confirming whether page is loaded fully or not
+                pageloadstate();
+				
 				List<WebElement> phonenumberdetails = driver
 						.findElementsByXPath("//div[contains(@id,'phoneTypeWidget')]/div/div/div/div/label/a");
 
